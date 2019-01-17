@@ -78,6 +78,22 @@ chown -R mysql:mysql ./
     service mysql restart // 重启
     ```
 6. 远程登录
+    ```text
+    # 开启防火墙
+     systemctl start firewalld
+    # 开启3306端口
+     firewall-cmd --add-port=3306/tcp
+    # 重启防火墙
+    systemctl start firewalld
+    # 配置root不限制登录IP
+    mysql> use mysql;
+    mysql> update user set host='%' where user='root';
+    # 刷新权限
+    mysql> flush privileges;
+    # 修改用户密码 plugin 为 mysql_native_password 
+    # 执行 select host,user,plugin,authentication_string from mysql.user; ，若 plugin非mysql_native_password 则需要修改密码
+    mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456'; #更新一下用户的密码 root用户密码为newpassword
+    ```
 
 ## 5. 常用操作
 1. 登录
