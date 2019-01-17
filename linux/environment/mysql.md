@@ -2,16 +2,22 @@
 ## 1. 下载
 1. 官网下载 https://dev.mysql.com/downloads/mysql/ 
 2. 操作系统选择-Linux -Generic
-3. 版本选择 64，下载  (mysql-8.0.13-linux-glibc2.12-x86_64.tar.xz)
+3. 版本选择 64，下载  (mysql-8.0.12-linux-glibc2.12-x86_64.tar.xz)
 ## 2. 上传至服务器
 1. 上传文件至 /home/data, 并解压
+    ```text
+    tar xvJf mysql-8.0.12-linux-glibc2.12-x86_64.tar.xz
+    ```
 2. 修改文件夹名称为 mysql   
   ```text
 mv mysql-8.0.12-linux-glibc2.12-x86_64/ mysql 
 ```
 3. 移动至 /usr/local/mysql
+> mysql 移动到该路径下可以避免很多额外配置
 ```text
 mv mysql/ /usr/local/
+# 或者可以直接移动并改文件夹名称为mysql
+mv mysql-8.0.12-linux-glibc2.12-x86_64/ /usr/local/mysql
 ```
 ## 3. 添加mysql用户及mysql用户组
 ```text
@@ -53,6 +59,23 @@ chown -R mysql:mysql ./
     socket=/tmp/mysql.sock
     log-error=error.log
     user = mysql
+    # 以上内容是新加，下面两行内容是注释原内容
+    # datadir=/var/lib/mysql 
+    # socket=/var/lib/mysql/mysql.sock
+    # Disabling symbolic-links is recommended to prevent assorted security risks
+    symbolic-links=0
+    # Settings user and group are ignored when systemd is used.
+    # If you need to run mysqld under a different user or group,
+    # customize your systemd unit file for mariadb according to the
+    # instructions in http://fedoraproject.org/wiki/Systemd
+    
+    [mysqld_safe]
+    log-error=/var/log/mariadb/mariadb.log
+    pid-file=/var/run/mariadb/mariadb.pid
+    #
+    # include all files from the config directory
+    #
+    !includedir /etc/my.cnf.d
     ```
     2. 配置 profile 
     > vi /etc/profile 进入文件,在底部添加下列内容
