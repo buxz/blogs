@@ -102,6 +102,8 @@ chown -R mysql:mysql ./
     ```
 6. 远程登录
     ```text
+    # 操作数据库时先修改密码
+    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
     # 开启防火墙
      systemctl start firewalld
     # 开启3306端口
@@ -125,6 +127,7 @@ chown -R mysql:mysql ./
 ```
 2. 修改登录密码 (用户 root 新密码为 123456)
 ```sql
+    mysql> SET PASSWORD FOR 'root'@localhost=PASSWORD('123456');   #对应的换成你自己的密码即可了。
     mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456'; #更新一下用户的密码 root用户密码为newpassword
 ```
 3. 退出登录
